@@ -30,8 +30,6 @@ module.exports = (gulp, options) => {
 
     if (!appPath) throw new Error('Parameter "appPath" is required for sass task');
 
-    console.log(remember.cacheFor('styles'));
-
     return combiner(
         gulp.src(`${appPath}src/styles/**/*.sass`, { since: gulp.lastRun('sass') }),
         gulpIf(isDev, sourcemaps.init()),
