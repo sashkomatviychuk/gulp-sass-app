@@ -18,6 +18,7 @@ gulp.task('assets', () => assetsTask(gulp, { appPath, isDev }));
 gulp.task('build', gulp.series('clean', 'assets', 'sass'));
 gulp.task('watch', () => watchTask(gulp, { appPath }));
 gulp.task('browser-sync', () => reloadTask(gulp, { appPath } ));
+gulp.task('dev', gulp.series('build', gulp.parallel('watch', 'browser-sync')));
 
 // default task definition
-gulp.task('default', gulp.series('build', gulp.parallel('watch', 'browser-sync')));
+gulp.task('default', gulp.series(isDev ? 'dev' : 'build'));
