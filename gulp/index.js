@@ -10,11 +10,13 @@ const sassTask = require('./tasks/sass');
 const assetsTask = require('./tasks/assets');
 const watchTask = require('./tasks/watch');
 const reloadTask = require('./tasks/reload');
+const spriteTask = require('./tasks/sprite');
 
 // add tasks
 gulp.task('sass', () => sassTask(gulp, { appPath, isDev }));
 gulp.task('clean', () => del([`${appPath}public/**`, `!${appPath}public`]));
 gulp.task('assets', () => assetsTask(gulp, { appPath, isDev }));
+gulp.task('sprite', () => spriteTask(gulp, { appPath }));
 gulp.task('build', gulp.series('clean', 'assets', 'sass'));
 gulp.task('watch', () => watchTask(gulp, { appPath }));
 gulp.task('browser-sync', () => reloadTask(gulp, { appPath } ));

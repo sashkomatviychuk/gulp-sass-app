@@ -1,4 +1,6 @@
 node_modules/
 public/
 manifest/
+src/images/
+build/
 yarn.lock

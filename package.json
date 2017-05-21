@@ -20,6 +20,9 @@
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglifycss": "^1.0.8",
+    "sprity": "^1.0.8",
+    "sprity-lwip": "^1.0.7",
+    "sprity-sass": "^1.0.4",
     "stream-combiner2": "^1.1.1"
   }
 }
