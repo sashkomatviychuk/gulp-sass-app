@@ -2,6 +2,7 @@ const debug = require('gulp-debug');
 const notify = require('gulp-notify');
 const replace = require('gulp-rev-replace');
 const gulpIf = require('gulp-if');
+const image = require('gulp-image');
 const combiner = require('stream-combiner2').obj;
 
 const config = require('../config');
@@ -15,8 +16,19 @@ module.exports = (gulp, options) => {
     const { isDev } = options;
 
     return combiner(
-        gulp.src(config.assetsPath, { since: gulp.lastRun('assets') }),
+        gulp.src(
+            [
+                config.assetsPath,
+                `!${config.sassFiles}`,
+                `!${config.spritesFiles}`,
+            ],
+            { since: gulp.lastRun('assets') }
+        ),
         debug({title: 'assets'}),
+        gulpIf(
+            '*.{png,jpg,gif,svg}',
+            gulpIf(!isDev, image())
+        ),
         gulpIf(
             !isDev,
             replace({
