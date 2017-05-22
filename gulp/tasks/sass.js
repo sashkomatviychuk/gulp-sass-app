@@ -10,6 +10,8 @@ const remember = require('gulp-remember');
 const rev = require('gulp-rev');
 const combiner = require('stream-combiner2').obj;
 
+const config = require('../config');
+
 /**
  * On error handler
  * @param {Error} err
@@ -26,12 +28,10 @@ const onError = err => ({
  * @param {object} options
  */
 module.exports = (gulp, options) => {
-    const { appPath, isDev } = options;
-
-    if (!appPath) throw new Error('Parameter "appPath" is required for sass task');
+    const { isDev } = options;
 
     return combiner(
-        gulp.src(`${appPath}src/styles/**/*.sass`, { since: gulp.lastRun('sass') }),
+        gulp.src(config.sassFiles, { since: gulp.lastRun('sass') }),
         gulpIf(isDev, sourcemaps.init()),
         debug({title: 'sass'}),
         sass(),
@@ -45,10 +45,10 @@ module.exports = (gulp, options) => {
             }),
             rev()
         )),
-        gulp.dest(`${appPath}public/css`),
+        gulp.dest(`${config.publicPath}/css`),
         gulpIf(!isDev, combiner(
             rev.manifest('css.json'),
-            gulp.dest(`${appPath}manifest`)
+            gulp.dest(config.manifestPath)
         )),
         notify({
             message: 'Compiled successfuly',

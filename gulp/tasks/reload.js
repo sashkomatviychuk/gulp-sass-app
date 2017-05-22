@@ -1,16 +1,13 @@
 const browserSync = require('browser-sync').create();
+const config = require('../config');
 
-module.exports = (gulp, options) => {
-    const { appPath } = options;
-
-    if (!appPath) throw new Error('Parameter "appPath" is required for sass task');
-
+module.exports = (gulp) => {
     browserSync.init({
         server: {
-            baseDir: `${appPath}public`,
+            baseDir: config.publicPath,
         },
     });
 
-    browserSync.watch(`${appPath}public/**/*.*`)
+    browserSync.watch(`${config.publicPath}/**/*.*`)
         .on('change', browserSync.reload);
 }

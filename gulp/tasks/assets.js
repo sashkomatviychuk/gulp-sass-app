@@ -4,26 +4,29 @@ const replace = require('gulp-rev-replace');
 const gulpIf = require('gulp-if');
 const combiner = require('stream-combiner2').obj;
 
+const config = require('../config');
+
 const onError = err => ({
     title: 'Assets build error',
     message: err.message,
 });
 
 module.exports = (gulp, options) => {
-    const { appPath, isDev } = options;
-
-    if (!appPath) throw new Error('Parameter "appPath" is required for sass task');
+    const { isDev } = options;
 
     return combiner(
-        gulp.src(`${appPath}src/**/*.{html,svg,png,ico}`, { since: gulp.lastRun('assets') }),
+        gulp.src(config.assetsPath, { since: gulp.lastRun('assets') }),
         debug({title: 'assets'}),
         gulpIf(
             !isDev,
             replace({
-                manifest: gulp.src(`${appPath}manifest/css.json`, { allowEmpty: true }),
+                manifest: gulp.src(
+                    `${config.manifestPath}/css.json`,
+                    { allowEmpty: true }
+                ),
             })
         ),
-        gulp.dest(`${appPath}public`)
+        gulp.dest(config.publicPath)
     )
         .on('error', notify.onError(onError));
 };
