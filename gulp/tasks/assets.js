@@ -26,8 +26,8 @@ module.exports = (gulp, options) => {
         ),
         debug({title: 'assets'}),
         gulpIf(
-            '*.{png,jpg,gif,svg}',
-            gulpIf(!isDev, image())
+            !isDev,
+            gulpIf('*.{png,jpg,gif,svg}', image())
         ),
         gulpIf(
             !isDev,
