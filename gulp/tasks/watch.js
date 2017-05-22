@@ -1,6 +1,7 @@
 const path = require('path');
 const del = require('del');
 const remember = require('gulp-remember');
+const config = require('../config');
 
 /**
  * On file unlink handler
@@ -11,9 +12,9 @@ const remember = require('gulp-remember');
  * @return {void}
  */
 const onUnlink = (filepath, options) => {
-    const { appPath, sass } = options;
-    const filePathFromSrc = path.relative(path.resolve(`${appPath}src`), filepath);
-    const destFilePath = path.resolve(`${appPath}/public`, filePathFromSrc);
+    const { sass } = options;
+    const filePathFromSrc = path.relative(path.resolve(config.srcPath), filepath);
+    const destFilePath = path.resolve(config.publicPath, filePathFromSrc);
 
     if (sass) {
         remember.forget('styles', filepath.replace(/\.sass$/, '.css'));
@@ -27,14 +28,15 @@ const onUnlink = (filepath, options) => {
  * @param {object} gulp
  * @param {object} options
  */
-module.exports = (gulp, options) => {
-    const { appPath } = options;
+module.exports = (gulp) => {
+    // watch sass changes
+    gulp.watch(config.sassFiles, gulp.series('sass'))
+        .on('unlink', (filepath) => onUnlink(filepath, { sass: true }));
 
-    if (!appPath) throw new Error('Parameter "appPath" is required for sass task');
+    // watch assets changes
+    gulp.watch([config.assetsPath, `!${config.spritesFiles}`], gulp.series('assets'))
+        .on('unlink', (filepath) => onUnlink(filepath));
 
-    gulp.watch(`${appPath}src/styles/**/*.sass`, gulp.series('sass'))
-        .on('unlink', (filepath) => onUnlink(filepath, { appPath, sass: true }));
-
-    gulp.watch([`${appPath}src/**/*.*`, `!${appPath}src/**/*.sass`], gulp.series('assets'))
-        .on('unlink', (filepath) => onUnlink(filepath, { appPath }));
+    // watch sprite changes
+    gulp.watch(config.spritesFiles, gulp.series('sprite'));
 }
