@@ -1,4 +1,3 @@
-require('sprity-lwip');
 const gulpIf = require('gulp-if');
 const sprity = require('sprity');
 const debug = require('gulp-debug');
