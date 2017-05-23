@@ -6,6 +6,7 @@ const publicPath = `${appPath}public/`;
 const assetsPath = `${appPath}src/**/*.*`;
 const manifestPath = `${appPath}manifest/`;
 const sassFiles = `${srcPath}styles/**/*.sass`;
+const jsFiles = `${srcPath}js/**/*.js`;
 const spritesFiles = `${srcPath}images/sprite/**/*.png`;
 
 module.exports = {
@@ -16,4 +17,5 @@ module.exports = {
     manifestPath,
     sassFiles,
     spritesFiles,
+    jsFiles,
 };
