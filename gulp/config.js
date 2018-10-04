@@ -1,13 +1,13 @@
 const path = require('path');
 
-const appPath = path.join(__dirname, '../');
-const srcPath = `${appPath}src/`;
-const publicPath = `${appPath}public/`;
-const assetsPath = `${appPath}src/**/*.*`;
-const manifestPath = `${appPath}manifest/`;
-const sassFiles = `${srcPath}styles/**/*.sass`;
-const jsFiles = `${srcPath}js/**/*.js`;
-const spritesFiles = `${srcPath}images/sprite/**/*.png`;
+const appPath = path.join(__dirname, '..');
+const srcPath = `${appPath}/src`;
+const publicPath = `${appPath}/public`;
+const manifestPath = `${appPath}/manifest`;
+const scssFiles = `${srcPath}/scss/**/*.scss`;
+const jsFiles = `${srcPath}/js/**/*.js`;
+const spritesFiles = `${srcPath}/images/sprite/**/*.png`;
+const assetsPath = `${srcPath}/**/*.*`;
 
 module.exports = {
     appPath,
@@ -15,7 +15,7 @@ module.exports = {
     publicPath,
     assetsPath,
     manifestPath,
-    sassFiles,
+    scssFiles,
     spritesFiles,
     jsFiles,
 };

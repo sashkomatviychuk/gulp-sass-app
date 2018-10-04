@@ -6,7 +6,7 @@ const { publicPath } = require('./config');
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
 
 // require gulp tasks
-const sassTask = require('./tasks/sass');
+const scssTask = require('./tasks/scss');
 const assetsTask = require('./tasks/assets');
 const watchTask = require('./tasks/watch');
 const reloadTask = require('./tasks/reload');
@@ -14,12 +14,12 @@ const spriteTask = require('./tasks/sprite');
 const lintTask = require('./tasks/lint');
 
 // add tasks
-gulp.task('sass', () => sassTask(gulp, { isDev }));
+gulp.task('scss', () => scssTask(gulp, { isDev }));
 gulp.task('clean', () => del([`${publicPath}/**`, `!${publicPath}`]));
-gulp.task('assets', () => assetsTask(gulp, { isDev }));
+gulp.task('assets', () => assetsTask(gulp));
 gulp.task('sprite', () => spriteTask(gulp));
 gulp.task('lint', () => lintTask(gulp));
-gulp.task('build', gulp.series('clean', 'sprite', 'assets', 'sass'));
+gulp.task('build', gulp.series('clean', 'sprite', 'assets', 'scss'));
 gulp.task('watch', () => watchTask(gulp));
 gulp.task('browser-sync', () => reloadTask(gulp));
 gulp.task('dev', gulp.series('build', gulp.parallel('watch', 'browser-sync')));

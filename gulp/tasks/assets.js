@@ -12,15 +12,16 @@ const onError = err => ({
     message: err.message,
 });
 
-module.exports = (gulp, options) => {
-    const { isDev } = options;
+module.exports = gulp => {
+    const isDev = !process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
 
     return combiner(
         gulp.src(
             [
                 config.assetsPath,
-                `!${config.sassFiles}`,
+                `!${config.scssFiles}`,
                 `!${config.spritesFiles}`,
+                `!${config.jsFiles}`,
             ],
             { since: gulp.lastRun('assets') }
         ),

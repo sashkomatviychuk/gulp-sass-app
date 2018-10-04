@@ -18,22 +18,21 @@ const config = require('../config');
  * @return {object}
  */
 const onError = err => ({
-    title: 'Sass compilation error',
+    title: 'Scss compilation error',
     message: err.message,
 });
 
 /**
- * Sass task function
+ * Scss task function
  * @param {object} gulp
- * @param {object} options
  */
-module.exports = (gulp, options) => {
-    const { isDev } = options;
+module.exports = gulp => {
+    const isDev = !process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
 
     return combiner(
-        gulp.src(config.sassFiles, { since: gulp.lastRun('sass') }),
+        gulp.src(config.scssFiles, { since: gulp.lastRun('scss') }),
         gulpIf(isDev, sourcemaps.init()),
-        debug({title: 'sass'}),
+        debug({title: 'scss'}),
         sass(),
         gulpIf(isDev, sourcemaps.write()),
         autoprefixer(),
@@ -52,7 +51,7 @@ module.exports = (gulp, options) => {
         )),
         notify({
             message: 'Compiled successfuly',
-            title: 'Sass'
+            title: 'Scss'
         })
     )
         .on('error', notify.onError(onError));
