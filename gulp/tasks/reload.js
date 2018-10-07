@@ -6,6 +6,7 @@ module.exports = gulp => {
         server: {
             baseDir: config.publicPath,
         },
+        port: 9000,
     });
 
     browserSync.watch(`${config.publicPath}/**/*.*`)

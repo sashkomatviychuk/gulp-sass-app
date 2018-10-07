@@ -8,16 +8,16 @@ const config = require('../config');
  * @param {string} filepath
  * @param {object} options
  * @param {string} options.filepath
- * @param {boolean} [options.scss]
+ * @param {string} [options.type]
  * @return {void}
  */
 const onUnlink = (filepath, options) => {
-    const { scss } = options;
+    const { type } = options;
     const filePathFromSrc = path.relative(path.resolve(config.srcPath), filepath);
     const destFilePath = path.resolve(config.publicPath, filePathFromSrc);
 
-    if (scss) {
-        remember.forget('styles', filepath.replace(/\.scss$/, '.css'));
+    if (type) {
+        remember.forget(type, filepath.replace(/\.scss$/, '.css'));
     }
 
     del.sync(destFilePath);
@@ -30,7 +30,7 @@ const onUnlink = (filepath, options) => {
 module.exports = gulp => {
     // watch scss changes
     gulp.watch(config.scssFiles, gulp.series('scss'))
-        .on('unlink', filepath => onUnlink(filepath, { scss: true }));
+        .on('unlink', filepath => onUnlink(filepath, { type: 'scss' }));
 
     // watch assets changes
     gulp.watch([config.assetsPath, `!${config.spritesFiles}`], gulp.series('assets'))
@@ -39,5 +39,7 @@ module.exports = gulp => {
     // watch sprite changes
     gulp.watch(config.spritesFiles, gulp.series('sprite'));
 
-    // @todo: add watch js files
+    // watch js changes
+    gulp.watch(config.jsFiles, gulp.series('scripts'))
+        .on('unlink', filepath => onUnlink(filepath, { type: 'scripts' }));
 }

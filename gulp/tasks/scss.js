@@ -36,8 +36,8 @@ module.exports = gulp => {
         sass(),
         gulpIf(isDev, sourcemaps.write()),
         autoprefixer(),
-        remember('styles'),
-        concat('styles.css'),
+        remember('scss'),
+        concat('style.css'),
         gulpIf(!isDev, combiner(
             uglifycss({
                 uglyComments: true,
@@ -46,12 +46,15 @@ module.exports = gulp => {
         )),
         gulp.dest(`${config.publicPath}/css`),
         gulpIf(!isDev, combiner(
-            rev.manifest('css.json'),
+            rev.manifest(`${config.manifestPath}/rev-manifest.json`, {
+                base: config.manifestPath,
+                merge: true,
+            }),
             gulp.dest(config.manifestPath)
         )),
         notify({
             message: 'Compiled successfuly',
-            title: 'Scss'
+            title: 'scss'
         })
     )
         .on('error', notify.onError(onError));
